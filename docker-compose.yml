@@ -1,7 +1,7 @@
 version: "3"
 services:
   monitor-active-server:
-    container_name: monitor-active-server
+    container_name: monitor_active_server
     build:
       context: .
       dockerfile: ./Dockerfile
