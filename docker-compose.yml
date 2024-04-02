@@ -1,0 +1,14 @@
+version: "3"
+services:
+  monitor-active-server:
+    container_name: monitor-active-server
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: unless-stopped
+    ports:
+      - 8001:8000
+    volumes:
+      - /usr/bin/docker:/usr/bin/docker
+      - ./src/config/service.yaml:/app/config/service.yaml
+      - /var/run/docker.sock:/var/run/docker.sock

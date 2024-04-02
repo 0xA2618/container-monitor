@@ -1,0 +1,10 @@
+monitorServer:
+  server: [
+    "prometheus",
+    "monitor-active-server",
+    "cadvisor",
+    "nginx116"
+  ]
+
+server:
+  port: 8000
