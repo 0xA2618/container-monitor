@@ -33,7 +33,7 @@ func CheckServetActive(monitorServerName string, lines []string) string {
 			fields := strings.Fields(line)
 
 			lenCount := len(fields)
-			name := fields[lenCount-1]
+			name := strings.ReplaceAll(fields[lenCount-1], "-", "_")
 			serverPort := fields[lenCount-2]
 			fmt.Println("serverName:", name)
 			fmt.Println("serverPort", serverPort)
