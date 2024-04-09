@@ -3,7 +3,9 @@ monitorServer:
     "prometheus",
     "monitor-active-server",
     "cadvisor",
-    "nginx116"
+    "nginx116",
+    "cadvisor-aa",
+    "cadvisor_aaa"
   ]
 
 server:

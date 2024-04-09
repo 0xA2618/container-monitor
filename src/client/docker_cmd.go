@@ -29,14 +29,17 @@ func CheckServetActive(monitorServerName string, lines []string) string {
 	// Skip the header line (first line) using NR > 1
 	for _, line := range lines[1:] {
 		line = strings.TrimSpace(line)
-
+		fmt.Println("line:", line)
 		if line != "" {
 			fields := strings.Fields(line)
-			fmt.Println("runServer:", fields)
+
 			lenCount := len(fields)
 			name := fields[lenCount-1]
+			serverPort := fields[lenCount-1]
+			fmt.Println("serverName:", name)
 			if name == monitorServerName {
-				return fields[lenCount-2]
+				fmt.Println("serverPort", serverPort)
+				return serverPort
 			}
 		}
 	}

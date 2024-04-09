@@ -70,7 +70,7 @@ func periodicallyUpdateMetrics(labels prometheus.Labels, m *metrics) {
 
 func main() {
 	config := viper.New()
-	//config.AddConfigPath("../config/")
+	//config.AddConfigPath("/home/ubuntu/zyy/tusimaMonitorServer/src/config/")
 	config.AddConfigPath("/app/config/")
 	config.SetConfigName("service")
 	config.SetConfigType("yaml")
@@ -86,8 +86,6 @@ func main() {
 
 		monitorServerList = append(monitorServerList, strings.ReplaceAll(name, "-", "_"))
 	}
-
-	fmt.Println("monitorServerList:", monitorServerList)
 
 	// Create a non-global registry.
 	reg := prometheus.NewRegistry()
