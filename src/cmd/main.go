@@ -85,7 +85,8 @@ func main() {
 		monitorServerList = append(monitorServerList, strings.ReplaceAll(name, "-", "_"))
 		fmt.Println("monitorServerList:", monitorServerList)
 	}
-
+	fmt.Println("monitorServerList2:", monitorServerList)
+	fmt.Println("----------------")
 	// Create a non-global registry.
 	reg := prometheus.NewRegistry()
 
