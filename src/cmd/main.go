@@ -83,7 +83,6 @@ func main() {
 
 	for _, name := range config.GetStringSlice("monitorServer.server") {
 		monitorServerList = append(monitorServerList, strings.ReplaceAll(name, "-", "_"))
-		fmt.Println("monitorServerList:", monitorServerList)
 	}
 	fmt.Println("monitorServerList2:", monitorServerList)
 	fmt.Println("----------------")
