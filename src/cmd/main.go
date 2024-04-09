@@ -82,9 +82,8 @@ func main() {
 	}
 
 	for _, name := range config.GetStringSlice("monitorServer.server") {
-		fmt.Println("name:", strings.ReplaceAll(name, "-", "_"))
-
 		monitorServerList = append(monitorServerList, strings.ReplaceAll(name, "-", "_"))
+		fmt.Println("monitorServerList:", monitorServerList)
 	}
 
 	// Create a non-global registry.
