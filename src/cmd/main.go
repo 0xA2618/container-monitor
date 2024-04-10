@@ -15,7 +15,7 @@ import (
 
 // var activeServer []string
 var monitorServerList []string
-var config = viper.New()
+var Cfg *viper.Viper
 
 type metrics struct {
 	serverTotal prometheus.Gauge
@@ -23,25 +23,19 @@ type metrics struct {
 }
 
 func init() {
-	viper.SetConfigName("config")
-	viper.AddConfigPath(".")
-	err := viper.ReadInConfig()
-	if err != nil {
-		log.Fatal(err)
-	}
-	monitorServerList = viper.GetStringSlice("monitorServerList")
+	Cfg = viper.New()
 
-	//config.AddConfigPath("/home/ubuntu/zyy/tusimaMonitorServer/src/config/")
-	config.AddConfigPath("/app/config/")
-	config.SetConfigName("service")
-	config.SetConfigType("yaml")
+	Cfg.AddConfigPath("/home/ubuntu/zyy/tusimaMonitorServer/src/config/")
+	//config.AddConfigPath("/app/config/")
+	Cfg.SetConfigName("service")
+	Cfg.SetConfigType("yaml")
 
-	if err := config.ReadInConfig(); err != nil {
+	if err := Cfg.ReadInConfig(); err != nil {
 		panic(err)
 		log.Fatal(err)
 	}
-
-	for _, name := range config.GetStringSlice("monitorServer.server") {
+	monitorServerList = viper.GetStringSlice("monitorServerList")
+	for _, name := range Cfg.GetStringSlice("monitorServer.server") {
 		monitorServerList = append(monitorServerList, strings.ReplaceAll(name, "-", "_"))
 	}
 	fmt.Println("monitorServerList2:", monitorServerList)
@@ -108,5 +102,5 @@ func main() {
 	go periodicallyUpdateMetrics(labels, m)
 
 	http.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{Registry: reg}))
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", config.Get("server.port")), nil))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%v", Cfg.Get("server.port")), nil))
 }
