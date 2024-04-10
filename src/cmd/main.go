@@ -38,8 +38,6 @@ func init() {
 	for _, name := range Cfg.GetStringSlice("monitorServer.server") {
 		monitorServerList = append(monitorServerList, strings.ReplaceAll(name, "-", "_"))
 	}
-	fmt.Println("monitorServerList2:", monitorServerList)
-	fmt.Println("----------------")
 }
 
 // NewMetrics creates a new metrics instance.
@@ -97,8 +95,18 @@ func main() {
 	// Create new metrics and register them using the custom registry.
 	m := NewMetrics(reg)
 
+	for {
+		if len(monitorServerList) > 0 {
+			fmt.Println("monitorServerList:", monitorServerList)
+			break
+		} else {
+			fmt.Println("read config failed. time.sleep 1 second")
+			time.Sleep(time.Second)
+		}
+	}
+
 	labels := make(prometheus.Labels)
-	time.Sleep(5 * time.Second)
+
 	go periodicallyUpdateMetrics(labels, m)
 
 	http.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{Registry: reg}))
