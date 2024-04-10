@@ -98,7 +98,7 @@ func main() {
 	m := NewMetrics(reg)
 
 	labels := make(prometheus.Labels)
-
+	time.Sleep(5 * time.Second)
 	go periodicallyUpdateMetrics(labels, m)
 
 	http.Handle("/metrics", promhttp.HandlerFor(reg, promhttp.HandlerOpts{Registry: reg}))
