@@ -24,8 +24,8 @@ type metrics struct {
 func init() {
 	Cfg = viper.New()
 
-	Cfg.AddConfigPath("/home/ubuntu/zyy/tusimaMonitorServer/src/config/")
-	//Cfg.AddConfigPath("/app/config/")
+	//Cfg.AddConfigPath("/home/ubuntu/zyy/tusimaMonitorServer/src/config/")
+	Cfg.AddConfigPath("/app/config/")
 	Cfg.SetConfigName("service")
 	Cfg.SetConfigType("yaml")
 
