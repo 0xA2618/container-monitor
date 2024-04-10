@@ -8,7 +8,6 @@ import (
 	"github.com/zhangyy8lab/tusimaServerMonitor/client"
 	"log"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -25,8 +24,8 @@ type metrics struct {
 func init() {
 	Cfg = viper.New()
 
-	//Cfg.AddConfigPath("/home/ubuntu/zyy/tusimaMonitorServer/src/config/")
-	Cfg.AddConfigPath("/app/config/")
+	Cfg.AddConfigPath("/home/ubuntu/zyy/tusimaMonitorServer/src/config/")
+	//Cfg.AddConfigPath("/app/config/")
 	Cfg.SetConfigName("service")
 	Cfg.SetConfigType("yaml")
 
@@ -63,28 +62,26 @@ func NewMetrics(reg prometheus.Registerer) *metrics {
 
 // periodicallyUpdateMetrics
 func periodicallyUpdateMetrics(labels prometheus.Labels, m *metrics) {
-
 	ticker := time.NewTicker(time.Second * 5)
 
-	for range ticker.C {
-		lines := client.DockerPS()
+	if len(monitorServerList) > 0 {
+		for range ticker.C {
+			lines := client.DockerPS()
 
-		// int to float
-		activeServerStr := strconv.Itoa(len(lines) - 1)
-
-		activeServerFloat, _ := strconv.ParseFloat(activeServerStr, 64)
-
-		if len(lines) > 0 {
-			for _, name := range monitorServerList {
-				labels[name] = client.CheckServetActive(name, lines)
-
+			// int to float
+			//activeServerStr := strconv.Itoa(len(lines) - 1)
+			//activeServerFloat, _ := strconv.ParseFloat(activeServerStr, 64)
+			//m.serverTotal.Set(activeServerFloat)
+			if len(lines) > 0 {
+				for _, name := range monitorServerList {
+					labels[name] = client.CheckServetActive(name, lines)
+				}
 			}
-		}
-		m.serverTotal.Set(activeServerFloat)
-		m.hdFailures.With(labels)
-	}
 
-	return
+			m.hdFailures.With(labels)
+		}
+		return
+	}
 }
 
 func main() {
@@ -102,6 +99,7 @@ func main() {
 		} else {
 			fmt.Println("read config failed. time.sleep 1 second")
 			time.Sleep(time.Second)
+			continue
 		}
 	}
 

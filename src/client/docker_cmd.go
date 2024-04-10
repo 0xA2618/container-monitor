@@ -38,7 +38,6 @@ func CheckServetActive(monitorServerName string, lines []string) string {
 			fmt.Println("serverName:", name)
 			fmt.Println("serverPort", serverPort)
 			if name == monitorServerName {
-
 				return serverPort
 			}
 		}
