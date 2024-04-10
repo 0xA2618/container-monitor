@@ -15,10 +15,37 @@ import (
 
 // var activeServer []string
 var monitorServerList []string
+var config = viper.New()
 
 type metrics struct {
 	serverTotal prometheus.Gauge
 	hdFailures  *prometheus.CounterVec
+}
+
+func init() {
+	viper.SetConfigName("config")
+	viper.AddConfigPath(".")
+	err := viper.ReadInConfig()
+	if err != nil {
+		log.Fatal(err)
+	}
+	monitorServerList = viper.GetStringSlice("monitorServerList")
+
+	//config.AddConfigPath("/home/ubuntu/zyy/tusimaMonitorServer/src/config/")
+	config.AddConfigPath("/app/config/")
+	config.SetConfigName("service")
+	config.SetConfigType("yaml")
+
+	if err := config.ReadInConfig(); err != nil {
+		panic(err)
+		log.Fatal(err)
+	}
+
+	for _, name := range config.GetStringSlice("monitorServer.server") {
+		monitorServerList = append(monitorServerList, strings.ReplaceAll(name, "-", "_"))
+	}
+	fmt.Println("monitorServerList2:", monitorServerList)
+	fmt.Println("----------------")
 }
 
 // NewMetrics creates a new metrics instance.
@@ -69,23 +96,7 @@ func periodicallyUpdateMetrics(labels prometheus.Labels, m *metrics) {
 }
 
 func main() {
-	config := viper.New()
-	//config.AddConfigPath("/home/ubuntu/zyy/tusimaMonitorServer/src/config/")
-	config.AddConfigPath("/app/config/")
-	config.SetConfigName("service")
-	config.SetConfigType("yaml")
 
-	if err := config.ReadInConfig(); err != nil {
-		panic(err)
-
-		log.Fatal(err)
-	}
-
-	for _, name := range config.GetStringSlice("monitorServer.server") {
-		monitorServerList = append(monitorServerList, strings.ReplaceAll(name, "-", "_"))
-	}
-	fmt.Println("monitorServerList2:", monitorServerList)
-	fmt.Println("----------------")
 	// Create a non-global registry.
 	reg := prometheus.NewRegistry()
 
