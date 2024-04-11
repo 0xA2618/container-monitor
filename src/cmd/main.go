@@ -30,8 +30,8 @@ func init() {
 	Cfg.SetConfigType("yaml")
 
 	if err := Cfg.ReadInConfig(); err != nil {
+		fmt.Println("read config file error")
 		panic(err)
-		log.Fatal(err)
 	}
 	monitorServerList = viper.GetStringSlice("monitorServerList")
 	for _, name := range Cfg.GetStringSlice("monitorServer.server") {
