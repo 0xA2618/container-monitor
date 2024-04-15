@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/spf13/viper"
-	"github.com/zhangyy8lab/tusimaServerMonitor/client"
 	"log"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/spf13/viper"
+	"github.com/zhangyy8lab/tusimaServerMonitor/client"
 )
 
 // var activeServer []string
